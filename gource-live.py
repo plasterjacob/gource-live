@@ -49,6 +49,6 @@ if args.show_feed:
     feeder.wait()
 else:
     feeder = subprocess.Popen(feeder_args, stdout=subprocess.PIPE)
-    gource = subprocess.Popen(['gource', '--log-format', 'custom', '--file-idle-time', '0', '-'], stdin=feeder.stdout)
+    gource = subprocess.Popen(['gource', '--log-format', 'custom', '--file-idle-time', '0', '-f', '-1280x720', '--hide', 'filenames,dirnames,mouse', '--title', '"Gource Live"', '--bloom-intensity', '0.25', '--key', '--max-file-lag', '0.1', '-'], stdin=feeder.stdout)
     gource.communicate()
 
