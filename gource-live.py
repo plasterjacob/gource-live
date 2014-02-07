@@ -49,6 +49,11 @@ if args.show_feed:
     feeder.wait()
 else:
     feeder = subprocess.Popen(feeder_args, stdout=subprocess.PIPE)
-    gource = subprocess.Popen(['gource', '--log-format', 'custom', '--file-idle-time', '0', '-f', '-1280x720', '--hide', 'filenames,dirnames,mouse', '--title', '"Gource Live"', '--bloom-intensity', '0.25', '--key', '--max-file-lag', '0.1', '-'], stdin=feeder.stdout)
-    gource.communicate()
 
+    gource2 = subprocess.Popen('gource --log-format git --file-idle-time 0 -640x480 -s 20 --hide filenames,dirnames,mouse --title "Gource Live" --bloom-intensity 0.25 --key --max-file-lag 0.1 --output-ppm-stream - | ffmpeg -y -r 30 -f image2pipe -vcodec ppm -i - -vcodec libvpx -b 1000K http://127.0.0.1:8090/feed1.ffm', shell=True, stdin=feeder.stdout) 
+    
+    # gource = subprocess.Popen(['gource', '--log-format', 'git', '--file-idle-time', '0', '-1280x720', '--hide', 'filenames,dirnames,mouse', '--bloom-intensity', '0.25', '--key', '--max-file-lag', '0.1', ' --output-ppm-stream', '-'], shell=True, stdin=feeder.stdout, stdout=subprocess.PIPE)
+    
+    # ffmpeg = subprocess.Popen(['ffmpeg', '-y', '-r', '30', '-f', 'image2pipe', '-vcodec', 'ppm', '-i', '-', '-vcodec', 'libvpx', '-b', '1000K', 'http://127.0.0.1:8090/feed1.ffm'], shell=True, stdin=gource.stdout, stdout=subprocess.PIPE)
+    
+    gource2.communicate()
